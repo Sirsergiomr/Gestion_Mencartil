@@ -73,7 +73,6 @@ public class LoginUsuarios extends AppCompatActivity implements View.OnClickList
                         progressDialog.dismiss();
                     }
                 });
-
     }
 
     @Override
