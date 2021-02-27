@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Gestion_Mencartil">
         <activity
             android:name=".ui.main.LoginUsuarios"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/Theme.Gestion_Mencartil.NoActionBar">
             <intent-filter>
