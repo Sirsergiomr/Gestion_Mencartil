@@ -32,11 +32,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return  new FragmentCuenta();
+                return new Fragment_tienda();
             case 1:
                 return  new Fragment_cesta();
             case 2:
-                return new Fragment_tienda();
+                return  new FragmentCuenta();
+
             default:return new FragmentCuenta();
         }
     }
