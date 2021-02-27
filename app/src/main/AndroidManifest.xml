@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gestion_mencartil">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gestion_Mencartil">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.LoginUsuarios"
             android:label="@string/app_name"
             android:theme="@style/Theme.Gestion_Mencartil.NoActionBar">
             <intent-filter>
