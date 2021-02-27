@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">Gestion Mencartil</string>
+    <string name="app_name">Gestion Mercantil</string>
     <string name="tab_text_1">Tiendas</string>
     <string name="tab_text_2">Cesta</string>
     <string name="tab_text_3">Cuenta</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
