@@ -33,13 +33,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 return  new FragmentCuenta();
-
             case 1:
                 return  new Fragment_cesta();
             case 2:
                 return new Fragment_tienda();
             default:return new FragmentCuenta();
-
         }
     }
 

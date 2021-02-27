@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "689029435047",
+    "project_id": "gestion-mercantil",
+    "storage_bucket": "gestion-mercantil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689029435047:android:0d372cf90dbe17280a1582",
+        "android_client_info": {
+          "package_name": "com.example.gestion_mencartil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689029435047-ckmbimhuvdrq49niqacfqgfeglk5u0ui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gestion_mencartil",
+            "certificate_hash": "eb51a1c8e77bd80449d9c49cc12072fe7c1da638"
+          }
+        },
+        {
+          "client_id": "689029435047-qi9sbpv7hgivmdqcv2mj7uupnrmea4g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDwLKN7Om0gVbTS9-AWyAywffEimFShoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689029435047-qi9sbpv7hgivmdqcv2mj7uupnrmea4g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
