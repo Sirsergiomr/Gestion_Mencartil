@@ -1,4 +1,4 @@
-package com.example.gestion_mencartil;
+package com.example.gestion_mencartil.Fragmens;
 
 import android.os.Bundle;
 
@@ -8,15 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.gestion_mencartil.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_tienda#newInstance} factory method to
+ * Use the {@link Fragment_tienda#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_tienda extends Fragment {
+public class Fragment_tienda extends Fragment {
 
-    public static fragment_tienda newInstance(String param1, String param2) {
-        fragment_tienda fragment = new fragment_tienda();
+    public static Fragment_tienda newInstance(String param1, String param2) {
+        Fragment_tienda fragment = new Fragment_tienda();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
