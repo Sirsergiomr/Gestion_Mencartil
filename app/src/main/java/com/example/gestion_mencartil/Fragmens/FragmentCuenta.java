@@ -103,7 +103,5 @@ public class FragmentCuenta extends Fragment {
             @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-
     }
 }
