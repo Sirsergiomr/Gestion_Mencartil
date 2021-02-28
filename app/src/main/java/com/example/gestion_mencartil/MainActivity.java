@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.gestion_mencartil.ui.main.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //Bundle bundle = getIntent().getExtras();
-        //String alias = bundle.getString("alias");
-        //if(alias != null ){
-        //    setTitle(alias);
-       //}
+        Bundle bundle = getIntent().getExtras();
+        String alias = bundle.getString("alias");
+        if(alias != null ){
+            setTitle(alias);
+       }
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -91,5 +92,11 @@ public class MainActivity extends AppCompatActivity {
                         // Hide the nav bar and status bar
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Sing out para salir ", Toast.LENGTH_LONG).show();
+
     }
 }
