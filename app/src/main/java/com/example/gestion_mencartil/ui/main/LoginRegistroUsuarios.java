@@ -267,4 +267,9 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
         i.putExtra("alias", alias);
         startActivity(i);
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
