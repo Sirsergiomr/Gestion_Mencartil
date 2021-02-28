@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gestion_Mencartil">
+        <activity android:name=".MainActivity"/>
         <activity
-            android:name=".ui.main.LoginUsuarios"
+            android:name=".ui.main.LoginRegistroUsuarios"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/Theme.Gestion_Mencartil.NoActionBar">

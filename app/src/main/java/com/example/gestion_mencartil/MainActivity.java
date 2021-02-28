@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
-import com.example.gestion_mencartil.ui.main.LoginUsuarios;
+import com.example.gestion_mencartil.ui.main.LoginRegistroUsuarios;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        Bundle bundle = getIntent().getExtras();
-        String alias = bundle.getString("alias");
-        if(alias != null ){
-            setTitle(alias);
-        }
+        //Bundle bundle = getIntent().getExtras();
+        //String alias = bundle.getString("alias");
+        //if(alias != null ){
+        //    setTitle(alias);
+       //}
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             prefs.clear();
             prefs.apply();
 
-            Intent i = new  Intent(this, LoginUsuarios.class);
+            Intent i = new  Intent(this, LoginRegistroUsuarios.class);
             startActivity(i);
         }
 
