@@ -61,7 +61,6 @@ public class FragmentCuenta extends Fragment {
                         System.out.println("Alias "+u.getName()+" Email "+u.getEmail()+" Saldo "+u.getsaldo());
                         //Carga los datos del usuario en los text view..
                     }
-
                 }
             }
             @Override public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
