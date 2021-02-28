@@ -20,6 +20,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.sql.Struct;
+import java.util.HashMap;
+import java.util.Map;
+
 public class FragmentCuenta extends Fragment {
 
     private DatabaseReference myRef = null;
@@ -68,5 +72,16 @@ public class FragmentCuenta extends Fragment {
             @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override public void onCancelled(@NonNull DatabaseError error) {}
         });
+    }
+    public void update(String email,String alias,String saldo){
+        myRef = database.getReference("Users");
+        String key = myRef.child(firebaseUser.getUid()).push().getKey();
+        User u = new User(firebaseUser.getUid(),email,alias,"11");
+        Map<String, Object> UserValues = u.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + key, UserValues);
+        myRef.updateChildren(childUpdates);
+
     }
 }

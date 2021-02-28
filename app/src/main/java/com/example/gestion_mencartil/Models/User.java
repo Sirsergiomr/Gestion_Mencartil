@@ -1,5 +1,10 @@
 package com.example.gestion_mencartil.Models;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class User{
     private String uid;
     private String email;
@@ -45,5 +50,17 @@ public class User{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email",email);
+        result.put("name",name);
+        result.put("saldo",saldo);
+        result.put("uid", uid);
+
+        return result;
     }
 }
