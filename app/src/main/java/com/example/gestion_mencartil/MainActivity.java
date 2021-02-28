@@ -93,10 +93,8 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
-
     @Override
     public void onBackPressed() {
         Toast.makeText(this, "Sing out para salir ", Toast.LENGTH_LONG).show();
-
     }
 }

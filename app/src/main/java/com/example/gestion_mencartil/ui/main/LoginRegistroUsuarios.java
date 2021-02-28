@@ -270,6 +270,6 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
 
     @Override
     public void onBackPressed() {
-
+        System.exit(0);
     }
 }
