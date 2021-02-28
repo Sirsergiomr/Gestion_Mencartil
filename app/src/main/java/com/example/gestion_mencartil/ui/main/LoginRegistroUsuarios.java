@@ -21,6 +21,7 @@ import com.example.gestion_mencartil.Models.User;
 import com.example.gestion_mencartil.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -66,6 +67,10 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
         btnRegistrar.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
+        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString("message","Entró");
+        analytics.logEvent("InitScreen",bundle);
         session();
     }
     String email;
@@ -271,5 +276,11 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
     @Override
     public void onBackPressed() {
         System.exit(0);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        session();
     }
 }
