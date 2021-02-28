@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.gestion_mencartil.Models.User;
 import com.example.gestion_mencartil.R;
@@ -30,6 +32,9 @@ public class FragmentCuenta extends Fragment {
     private DatabaseReference myRef = null;
     private FirebaseUser firebaseUser = null;
     private FirebaseDatabase database = null;
+    private TextView TxtEmail;
+    private TextView TxtAlias;
+    private TextView TxtSaldoTjt;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,11 @@ public class FragmentCuenta extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_cuenta, container, false);
-        //Ids de los text view...
+
+        TxtEmail = (TextView) vista.findViewById(R.id.EmailTxtView);
+        TxtAlias = (TextView) vista.findViewById(R.id.AliasTxtView);
+        TxtSaldoTjt = (TextView) vista.findViewById(R.id.SaldoTxtView);
+
         datos();
         return vista;
     }
@@ -64,7 +73,9 @@ public class FragmentCuenta extends Fragment {
                 if(u != null){
                     if(u.getUid().equals(firebaseUser.getUid())){
                         System.out.println("Alias "+u.getName()+" Email "+u.getEmail()+" Saldo "+u.getsaldo());
-                        //Carga los datos del usuario en los text view..
+                        TxtEmail.setText(u.getEmail());
+                        TxtAlias.setText(u.getName());
+                        TxtSaldoTjt.setText(u.getsaldo());
                     }
                 }
             }
@@ -93,8 +104,9 @@ public class FragmentCuenta extends Fragment {
                         childUpdates.put(firebaseUser.getUid(), UserValues);
                         myRef.updateChildren(childUpdates);
 
-
-                        //Carga los datos del usuario en los text view..
+                        TxtEmail.setText(upd.getEmail());
+                        TxtAlias.setText(upd.getName());
+                        TxtSaldoTjt.setText(upd.getsaldo());
                     }
                 }
             }
