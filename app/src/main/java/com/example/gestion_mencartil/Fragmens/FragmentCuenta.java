@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.gestion_mencartil.Models.User;
 import com.example.gestion_mencartil.R;
+import com.example.gestion_mencartil.ui.main.RecargaDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -32,9 +34,8 @@ public class FragmentCuenta extends Fragment {
     private DatabaseReference myRef = null;
     private FirebaseUser firebaseUser = null;
     private FirebaseDatabase database = null;
-    private TextView TxtEmail;
-    private TextView TxtAlias;
-    private TextView TxtSaldoTjt;
+    private TextView TxtEmail, TxtAlias, TxtSaldoTjt;
+    private Button btnRecarga;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,13 @@ public class FragmentCuenta extends Fragment {
         TxtEmail = (TextView) vista.findViewById(R.id.EmailTxtView);
         TxtAlias = (TextView) vista.findViewById(R.id.AliasTxtView);
         TxtSaldoTjt = (TextView) vista.findViewById(R.id.SaldoTxtView);
+        btnRecarga = (Button) vista.findViewById(R.id.RecargaSaldoButton);
+        btnRecarga.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
 
         datos();
         return vista;
@@ -85,6 +93,11 @@ public class FragmentCuenta extends Fragment {
             @Override public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
+    public void openDialog(){
+        RecargaDialog recargaDialog = new RecargaDialog();
+        recargaDialog.show(this.getFragmentManager(), "Recarga Dialog");
+    }
+
     public void update(String email,String alias,String saldo){
         myRef = database.getReference("Users");
         myRef.addChildEventListener(new ChildEventListener() {
