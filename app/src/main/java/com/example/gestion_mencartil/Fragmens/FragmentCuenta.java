@@ -1,5 +1,6 @@
 package com.example.gestion_mencartil.Fragmens;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -75,13 +76,34 @@ public class FragmentCuenta extends Fragment {
     }
     public void update(String email,String alias,String saldo){
         myRef = database.getReference("Users");
-        String key = myRef.child(firebaseUser.getUid()).push().getKey();
-        User u = new User(firebaseUser.getUid(),email,alias,"11");
-        Map<String, Object> UserValues = u.toMap();
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded( DataSnapshot datasnapshot,  String previousChildName) {
+                User u = datasnapshot.getValue(User.class);
+                if(u != null){
+                    if(u.getUid().equals(firebaseUser.getUid())){
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + key, UserValues);
-        myRef.updateChildren(childUpdates);
+                        int saldobase = Integer.parseInt(u.getsaldo());
+                        int saldoAñadido = Integer.parseInt(saldo);
+                        int saldofinal = saldobase+saldoAñadido;
+
+                        User upd = new User(firebaseUser.getUid(),email,alias,Integer.toString(saldofinal));
+                        Map<String, Object> UserValues = upd.toMap();
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put(firebaseUser.getUid(), UserValues);
+                        myRef.updateChildren(childUpdates);
+
+
+                        //Carga los datos del usuario en los text view..
+                    }
+                }
+            }
+            @Override public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
 
     }
 }
