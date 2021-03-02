@@ -1,4 +1,4 @@
-package com.example.gestion_mencartil.Fragmens;
+package com.example.gestion_mencartil.Usuario.Fragmens;
 
 import android.os.Bundle;
 
@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.gestion_mencartil.Models.User;
+import com.example.gestion_mencartil.Usuario.Models.User;
 import com.example.gestion_mencartil.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 

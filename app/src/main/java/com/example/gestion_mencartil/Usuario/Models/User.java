@@ -1,4 +1,4 @@
-package com.example.gestion_mencartil.Models;
+package com.example.gestion_mencartil.Usuario.Models;
 
 import com.google.firebase.database.Exclude;
 

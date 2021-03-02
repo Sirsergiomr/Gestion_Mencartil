@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.gestion_mencartil.Fragmens.FragmentCuenta;
-import com.example.gestion_mencartil.Fragmens.Fragment_cesta;
-import com.example.gestion_mencartil.Fragmens.Fragment_tienda;
+import com.example.gestion_mencartil.Usuario.Fragmens.FragmentCuenta;
+import com.example.gestion_mencartil.Usuario.Fragmens.Fragment_cesta;
+import com.example.gestion_mencartil.Usuario.Fragmens.Fragment_tienda;
 import com.example.gestion_mencartil.R;
 
 /**
