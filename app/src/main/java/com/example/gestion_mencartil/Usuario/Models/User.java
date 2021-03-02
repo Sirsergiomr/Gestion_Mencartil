@@ -19,7 +19,11 @@ public class User{
         this.name = name;
         this.saldo = saldo;
     }
-
+    public User(String uid, String email, String name) {
+        this.uid = uid;
+        this.email = email;
+        this.name = name;
+    }
     public String getsaldo() {
         return saldo;
     }

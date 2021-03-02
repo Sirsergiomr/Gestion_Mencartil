@@ -128,4 +128,15 @@
         app:layout_constraintStart_toStartOf="@+id/logo"
         app:layout_constraintTop_toBottomOf="@+id/appUsuarios" />
 
+    <Switch
+        android:id="@+id/switchLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:text="AdminLog"
+        android:textColor="#151515"
+        app:layout_constraintBottom_toBottomOf="@+id/appUsuarios"
+        app:layout_constraintStart_toEndOf="@+id/appUsuarios" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
