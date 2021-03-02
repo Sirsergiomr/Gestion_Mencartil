@@ -17,7 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.gestion_mencartil.MainActivity;
+import com.example.gestion_mencartil.Administracion.Admin_main;
+import com.example.gestion_mencartil.Usuario.MainActivity;
 import com.example.gestion_mencartil.Usuario.Models.User;
 import com.example.gestion_mencartil.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnClickListener {
+public class LoginRegistro extends AppCompatActivity implements View.OnClickListener {
 
     private EditText TextEmail;
     private EditText TextPassword;
@@ -84,12 +85,13 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
             case R.id.RegisterButton:
                 if(!aSwitch.isChecked()) {registrarUsuario();persistencia();}else {
                     //RegistroAdmin & persistencia
-                    registrarAdmin();
+                    registrarAdmin();persistencia();
                 }
                 break;
             case R.id.LoginButton:
                 if(!aSwitch.isChecked()) {loguearUsuario();persistencia(); }else {
                     //LogAdmin & persistencia
+                    loguearAdmin();persistencia();
                 }
                 break;
         }
@@ -130,17 +132,17 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
             if(!aSwitch.isChecked()){
                 GoHome(alias);
             }else{
-
+                GoAdmin(alias);
             }
         }
     }
     public void GoHome(String alias){
-        Intent i = new Intent(LoginRegistroUsuarios.this, MainActivity.class);
+        Intent i = new Intent(LoginRegistro.this, MainActivity.class);
         i.putExtra("alias", alias);
         startActivity(i);
     }
     public void GoAdmin(String alias){
-        Intent i = new Intent(LoginRegistroUsuarios.this, MainActivity.class);
+        Intent i = new Intent(LoginRegistro.this, Admin_main.class);
         i.putExtra("alias", alias);
         startActivity(i);
     }
@@ -174,13 +176,13 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
                                 }catch (NullPointerException e){GenerarArbolUsers(Registro, email );}
                                 persistencia();
                                 session();
-                                Toast.makeText(LoginRegistroUsuarios.this, "Se ha registrado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
-                            } else { if (task.getException() instanceof FirebaseAuthUserCollisionException){Toast.makeText(LoginRegistroUsuarios.this, R.string.user_exist, Toast.LENGTH_SHORT).show(); }else { Toast.makeText(LoginRegistroUsuarios.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();} }
+                                Toast.makeText(LoginRegistro.this, "Se ha registrado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                            } else { if (task.getException() instanceof FirebaseAuthUserCollisionException){Toast.makeText(LoginRegistro.this, R.string.user_exist, Toast.LENGTH_SHORT).show(); }else { Toast.makeText(LoginRegistro.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();} }
                             progressDialog.dismiss();
                         }
                     });
         } else {
-            Toast.makeText(LoginRegistroUsuarios.this, R.string.erromail, Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginRegistro.this, R.string.erromail, Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
         }
     }
@@ -197,10 +199,10 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {Toast.makeText(LoginRegistroUsuarios.this, "Se ha logueado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                            if (task.isSuccessful()) {Toast.makeText(LoginRegistro.this, "Se ha logueado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
                                 persistencia();
                                 session();
-                            } else {Toast.makeText(LoginRegistroUsuarios.this, R.string.log_error, Toast.LENGTH_LONG).show(); }
+                            } else {Toast.makeText(LoginRegistro.this, R.string.log_error, Toast.LENGTH_LONG).show(); }
                             progressDialog.dismiss();}});
         }
     }
@@ -258,13 +260,13 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
                     }
                     persistencia();
                     session();
-                    Toast.makeText(LoginRegistroUsuarios.this, "Se ha registrado el administrador con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
-                } else { if (task.getException() instanceof FirebaseAuthUserCollisionException){Toast.makeText(LoginRegistroUsuarios.this, R.string.user_exist, Toast.LENGTH_SHORT).show(); }else { Toast.makeText(LoginRegistroUsuarios.this, "No se pudo registrar el administrador ", Toast.LENGTH_LONG).show();} }
+                    Toast.makeText(LoginRegistro.this, "Se ha registrado el administrador con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                } else { if (task.getException() instanceof FirebaseAuthUserCollisionException){Toast.makeText(LoginRegistro.this, R.string.user_exist, Toast.LENGTH_SHORT).show(); }else { Toast.makeText(LoginRegistro.this, "No se pudo registrar el administrador ", Toast.LENGTH_LONG).show();} }
                 progressDialog.dismiss();
             }
         });
         } else {
-            Toast.makeText(LoginRegistroUsuarios.this, R.string.erromail, Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginRegistro.this, R.string.erromail, Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
         }
     }
@@ -278,7 +280,7 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
                     User u = datasnapshot.getValue(User.class);
                     if (u.getName()!= null){ Registro.add(u); }
                 }
-                GenerarArbolUsers(Registro, email);
+                GenerarAdmin(Registro, email);
             }
             @Override
             public void onCancelled(DatabaseError error) {Log.e("onDataChange", "Error en OndataChange User", error.toException());}
@@ -293,6 +295,27 @@ public class LoginRegistroUsuarios extends AppCompatActivity implements View.OnC
             for (int i = 0; i<email.length(); i++){ if(email.charAt(i) == '@'){break;}else{alias = alias + email.charAt(i);}}
             User u = new User(firebaseUser.getUid(),email,alias);
             database.getReference("Admin").child(firebaseUser.getUid()).setValue(u);
+        }
+    }
+    private void loguearAdmin() {
+        email = TextEmail.getText().toString().trim();
+        String password = TextPassword.getText().toString().trim();
+        if(email.isEmpty()|| password.isEmpty()){
+            if (email.equals("")) {Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show(); return;}
+            if (password.equals("")) {Toast.makeText(this,  R.string.forgivePassword, Toast.LENGTH_LONG).show();return;}
+        }else{
+            progressDialog.setMessage("Realizando login...");
+            progressDialog.show();
+            if(existe == true){
+                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {Toast.makeText(LoginRegistro.this, "Se ha logueado el admin con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                            persistencia();
+                            session();
+                        } else {Toast.makeText(LoginRegistro.this, R.string.log_error, Toast.LENGTH_LONG).show(); }
+                        progressDialog.dismiss();}});
+            }
         }
     }
 }

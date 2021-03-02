@@ -1,47 +1,39 @@
-package com.example.gestion_mencartil;
+package com.example.gestion_mencartil.Administracion;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-
-import com.example.gestion_mencartil.ui.main.LoginRegistroUsuarios;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.gestion_mencartil.ui.main.SectionsPagerAdapter;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.gestion_mencartil.R;
+import com.example.gestion_mencartil.ui.main.LoginRegistro;
+import com.example.gestion_mencartil.Administracion.Fragments.SectionsPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity{
-
+public class Admin_main extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         Bundle bundle = getIntent().getExtras();
         String alias = bundle.getString("alias");
         if(alias != null ){
             setTitle(alias);
-       }
-
+        }
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
@@ -58,7 +50,7 @@ public class MainActivity extends AppCompatActivity{
             prefs.clear();
             prefs.apply();
 
-            Intent i = new  Intent(this, LoginRegistroUsuarios.class);
+            Intent i = new  Intent(this, LoginRegistro.class);
             startActivity(i);
         }
 

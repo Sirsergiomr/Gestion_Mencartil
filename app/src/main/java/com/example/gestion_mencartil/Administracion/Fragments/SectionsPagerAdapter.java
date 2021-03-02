@@ -1,4 +1,4 @@
-package com.example.gestion_mencartil.ui.main;
+package com.example.gestion_mencartil.Administracion.Fragments;
 
 import android.content.Context;
 
@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.gestion_mencartil.R;
+import com.example.gestion_mencartil.Administracion.Fragments.local;
+import com.example.gestion_mencartil.Administracion.Fragments.user;
 import com.example.gestion_mencartil.Usuario.Fragmens.FragmentCuenta;
 import com.example.gestion_mencartil.Usuario.Fragmens.Fragment_cesta;
 import com.example.gestion_mencartil.Usuario.Fragmens.Fragment_tienda;
+import com.example.gestion_mencartil.R;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,7 +22,7 @@ import com.example.gestion_mencartil.Usuario.Fragmens.Fragment_tienda;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2,R.string.tab_text_3};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_4,R.string.tab_text_5};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -32,14 +34,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new Fragment_tienda();
+                return new local();
             case 1:
-                return  new Fragment_cesta();
-            case 2:
-                return  new FragmentCuenta();
+                return  new user();
 
-            default:return new FragmentCuenta();
         }
+        return null;
     }
 
     @Nullable
@@ -51,6 +51,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 2 total pages.
-        return 3;
+        return 2;
     }
 }
