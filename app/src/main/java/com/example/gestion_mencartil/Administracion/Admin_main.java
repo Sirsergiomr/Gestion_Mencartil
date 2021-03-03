@@ -11,28 +11,21 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.gestion_mencartil.R;
 import com.example.gestion_mencartil.ui.main.LoginRegistro;
-import com.example.gestion_mencartil.Administracion.Fragments.SectionsPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Admin_main extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Bundle bundle = getIntent().getExtras();
         String alias = bundle.getString("alias");
-        if(alias != null ){
+        if (alias != null) {
             setTitle(alias);
         }
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

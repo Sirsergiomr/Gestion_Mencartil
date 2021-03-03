@@ -12,4 +12,5 @@
     <string name="erromail">El correo o la contraseña son incorrectos. La contraseña debe de ser mayor de 5 y menor de 21 caracteres</string>
     <string name="user_exist">El usuario ya existe </string>
     <string name="log_error">No se pudo loguear el usuario </string>
+    <string name="title_activity_admin">AdminActivity</string>
 </resources>

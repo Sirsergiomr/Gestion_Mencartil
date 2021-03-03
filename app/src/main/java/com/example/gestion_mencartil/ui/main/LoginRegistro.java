@@ -142,9 +142,9 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
         startActivity(i);
     }
     public void GoAdmin(String alias){
-        Intent i = new Intent(LoginRegistro.this, Admin_main.class);
+        /*Intent i = new Intent(LoginRegistro.this, Admin_main.class);
         i.putExtra("alias", alias);
-        startActivity(i);
+        startActivity(i);*/
     }
     @Override
     public void onBackPressed() {

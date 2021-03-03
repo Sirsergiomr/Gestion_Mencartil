@@ -3,7 +3,8 @@
     package="com.example.gestion_mencartil">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_textura_logoapp"
@@ -11,12 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_textura_logoapp"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gestion_Mencartil">
-        <activity android:name=".Administracion.Admin_main"/>
-        <activity android:name=".Usuario.MainActivity"/>
+        <activity android:name=".Administracion.Admin_main" />
+        <activity android:name=".Usuario.MainActivity" />
         <activity
             android:name=".ui.main.LoginRegistro"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Gestion_Mencartil.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
