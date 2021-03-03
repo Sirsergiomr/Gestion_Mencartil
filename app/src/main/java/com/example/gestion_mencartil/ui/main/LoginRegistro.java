@@ -47,6 +47,7 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
     private FirebaseUser firebaseUser = null;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference myRef = null;
+    boolean existe;
     String alias = "";
     String email;
     ArrayList<User> Registro = new ArrayList<>();
@@ -75,8 +76,8 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
         aSwitch = findViewById(R.id.switchLog);
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
-        bundle.putString("message","Entró");
-        analytics.logEvent("InitScreen",bundle);
+        bundle.putString("message", "Entró");
+        analytics.logEvent("InitScreen", bundle);
         session();
     }
 
@@ -84,15 +85,21 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.RegisterButton:
-                if(!aSwitch.isChecked()) {registrarUsuario();persistencia();}else {
+                if (!aSwitch.isChecked()) {
+                    registrarUsuario();
+                    persistencia();
+                } else {
                     //RegistroAdmin & persistencia
-                    registrarAdmin();persistencia();
+                    registrarAdmin();
                 }
                 break;
             case R.id.LoginButton:
-                if(!aSwitch.isChecked()) {loguearUsuario();persistencia(); }else {
+                if (!aSwitch.isChecked()) {
+                    loguearUsuario();
+                    persistencia();
+                } else {
                     //LogAdmin & persistencia
-                    loguearAdmin();persistencia();
+                    loguearAdmin();
                 }
                 break;
         }
@@ -106,7 +113,7 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
         } else return false;
     }
 
-    private void persistencia(){
+    private void persistencia() {
         SharedPreferences.Editor prefs = getSharedPreferences(
                 getString(R.string.prefs_file),
                 Context.MODE_PRIVATE
@@ -114,39 +121,47 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
         prefs.putString("email", email);
         prefs.apply();
     }
+
     private boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
-    private void session(){
+
+    private void session() {
+
         SharedPreferences prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE);
-        email = prefs.getString("email",null);
-        if(email == null){
+        email = prefs.getString("email", null);
+        if (email == null) {
             btnLogin.setEnabled(true);
             btnRegistrar.setEnabled(true);
-        }else{
+        } else {
             btnLogin.setEnabled(false);
             btnRegistrar.setEnabled(false);
-            alias="";
-            for (int i = 0; i<email.length(); i++){
-                if(email.charAt(i) == '@'){break;}else{ alias = alias + email.charAt(i);}
+            alias = "";
+            for (int i = 0; i < email.length(); i++) {
+                if (email.charAt(i) == '@') {
+                    break;
+                } else {
+                    alias = alias + email.charAt(i);
+                }
             }
-            if(!aSwitch.isChecked()){
+            if (!aSwitch.isChecked()) {
                 GoHome(alias);
-            }else{
-                GoAdmin(alias);
             }
         }
     }
-    public void GoHome(String alias){
+
+    public void GoHome(String alias) {
         Intent i = new Intent(LoginRegistro.this, MainActivity.class);
         i.putExtra("alias", alias);
         startActivity(i);
     }
-    public void GoAdmin(String alias){
-        /*Intent i = new Intent(LoginRegistro.this, Admin_main.class);
+
+    public void GoAdmin(String alias) {
+        Intent i = new Intent(LoginRegistro.this, Admin_main.class);
         i.putExtra("alias", alias);
-        startActivity(i);*/
+        startActivity(i);
     }
+
     @Override
     public void onBackPressed() {
         System.exit(0);
@@ -162,26 +177,42 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
         email = TextEmail.getText().toString().trim();
         String password = TextPassword.getText().toString().trim();
 
-        if (email.equals("")) {Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show();return;}
-        if (password.equals("")) { Toast.makeText(this,  R.string.forgivePassword, Toast.LENGTH_LONG).show();return; }
+        if (email.equals("")) {
+            Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.equals("")) {
+            Toast.makeText(this, R.string.forgivePassword, Toast.LENGTH_LONG).show();
+            return;
+        }
 
         progressDialog.setMessage("Realizando registro...");
         progressDialog.show();
 
-        if (isValidEmail(email) && validarContraseña()) {firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                try {myRef = database.getReference("Users").child(firebaseUser.getUid());
-                                    CargarArbolUsers(email);
-                                }catch (NullPointerException e){GenerarArbolUsers(Registro, email );}
-                                persistencia();
-                                session();
-                                Toast.makeText(LoginRegistro.this, "Se ha registrado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
-                            } else { if (task.getException() instanceof FirebaseAuthUserCollisionException){Toast.makeText(LoginRegistro.this, R.string.user_exist, Toast.LENGTH_SHORT).show(); }else { Toast.makeText(LoginRegistro.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();} }
-                            progressDialog.dismiss();
+        if (isValidEmail(email) && validarContraseña()) {
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        try {
+                            myRef = database.getReference("Users").child(firebaseUser.getUid());
+                            CargarArbolUsers(email);
+                        } catch (NullPointerException e) {
+                            GenerarArbolUsers(Registro, email);
                         }
-                    });
+                        persistencia();
+                        session();
+                        Toast.makeText(LoginRegistro.this, "Se ha registrado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                    } else {
+                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                            Toast.makeText(LoginRegistro.this, R.string.user_exist, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginRegistro.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    progressDialog.dismiss();
+                }
+            });
         } else {
             Toast.makeText(LoginRegistro.this, R.string.erromail, Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
@@ -191,132 +222,199 @@ public class LoginRegistro extends AppCompatActivity implements View.OnClickList
     private void loguearUsuario() {
         email = TextEmail.getText().toString().trim();
         String password = TextPassword.getText().toString().trim();
-        if(email.isEmpty()|| password.isEmpty()){
-            if (email.equals("")) {Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show(); return;}
-            if (password.equals("")) {Toast.makeText(this,  R.string.forgivePassword, Toast.LENGTH_LONG).show();return;}
-        }else{
+        if (email.isEmpty() || password.isEmpty()) {
+            if (email.equals("")) {
+                Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (password.equals("")) {
+                Toast.makeText(this, R.string.forgivePassword, Toast.LENGTH_LONG).show();
+                return;
+            }
+        } else {
             progressDialog.setMessage("Realizando loguin...");
             progressDialog.show();
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {Toast.makeText(LoginRegistro.this, "Se ha logueado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
-                                persistencia();
-                                session();
-                            } else {Toast.makeText(LoginRegistro.this, R.string.log_error, Toast.LENGTH_LONG).show(); }
-                            progressDialog.dismiss();}});
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginRegistro.this, "Se ha logueado el usuario con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                        persistencia();
+                        session();
+                    } else {
+                        Toast.makeText(LoginRegistro.this, R.string.log_error, Toast.LENGTH_LONG).show();
+                    }
+                    progressDialog.dismiss();
+                }
+            });
         }
     }
 
-    boolean existe = false;
-    public void GenerarArbolUsers(ArrayList<User> arrayList, String email){
-        firebaseUser =  firebaseAuth.getCurrentUser();
-        for(int i = 0 ;i <arrayList.size();i++){
-            if (firebaseUser.getUid().equals(arrayList.get(i).getUid())){existe = true;}
+
+    public void GenerarArbolUsers(ArrayList<User> arrayList, String email) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (firebaseUser.getUid().equals(arrayList.get(i).getUid())) {
+                existe = true;
+            }
         }
-        if(existe == false){
-            for (int i = 0; i<email.length(); i++){ if(email.charAt(i) == '@'){break;}else{alias = alias + email.charAt(i);}}
-            User u = new User(firebaseUser.getUid(),email,alias,"0");
+        if (existe == false) {
+            for (int i = 0; i < email.length(); i++) {
+                if (email.charAt(i) == '@') {
+                    break;
+                } else {
+                    alias = alias + email.charAt(i);
+                }
+            }
+            User u = new User(firebaseUser.getUid(), email, alias, "0");
             database.getReference("Users").child(firebaseUser.getUid()).setValue(u);
         }
     }
 
-    public void CargarArbolUsers(String  email){
-            myRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot datasnapshot) {
-                    Registro.clear();
-                    for (DataSnapshot snapshot : datasnapshot.getChildren()){
-                        User u = datasnapshot.getValue(User.class);
-                        if (u.getName()!= null){ Registro.add(u); }
+    public void CargarArbolUsers(String email) {
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot datasnapshot) {
+                Registro.clear();
+                for (DataSnapshot snapshot : datasnapshot.getChildren()) {
+                    User u = datasnapshot.getValue(User.class);
+                    if (u.getName() != null) {
+                        Registro.add(u);
                     }
-                    GenerarArbolUsers(Registro, email);
                 }
-                @Override
-                public void onCancelled(DatabaseError error) {Log.e("onDataChange", "Error en OndataChange User", error.toException());}
-            });
+                GenerarArbolUsers(Registro, email);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("onDataChange", "Error en OndataChange User", error.toException());
+            }
+        });
     }
 
     private void registrarAdmin() {
         email = TextEmail.getText().toString().trim();
         String password = TextPassword.getText().toString().trim();
 
-        if (email.equals("")) {Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show();return;}
-        if (password.equals("")) { Toast.makeText(this, R.string.forgivePassword, Toast.LENGTH_LONG).show();return; }
+        if (email.equals("")) {
+            Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.equals("")) {
+            Toast.makeText(this, R.string.forgivePassword, Toast.LENGTH_LONG).show();
+            return;
+        }
 
         progressDialog.setMessage("Realizando registro...");
         progressDialog.show();
 
-        if (isValidEmail(email) && validarContraseña()) {firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    try {
+        if (isValidEmail(email) && validarContraseña()) {
+            myRef = database.getReference("Admin");
 
-                        myRef = database.getReference("Admin");
-                        CargarAdmin(email);
-                    }catch (NullPointerException e){
 
-                        GenerarAdmin(Registro, email );
+                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            try {
+                                    CargarAdmin(email);
+                            } catch (NullPointerException e) {
+                                   GenerarAdmin(Registro, email);
+                            }
+                            GoAdmin(alias);
+                            Toast.makeText(LoginRegistro.this, "Se ha registrado el administrador con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(LoginRegistro.this, R.string.user_exist, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginRegistro.this, "No se pudo registrar el administrador ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        progressDialog.dismiss();
                     }
-                    persistencia();
-                    session();
-                    Toast.makeText(LoginRegistro.this, "Se ha registrado el administrador con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
-                } else { if (task.getException() instanceof FirebaseAuthUserCollisionException){Toast.makeText(LoginRegistro.this, R.string.user_exist, Toast.LENGTH_SHORT).show(); }else { Toast.makeText(LoginRegistro.this, "No se pudo registrar el administrador ", Toast.LENGTH_LONG).show();} }
+                });
+            } else {
+                Toast.makeText(LoginRegistro.this, R.string.erromail, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
-        });
-        } else {
-            Toast.makeText(LoginRegistro.this, R.string.erromail, Toast.LENGTH_SHORT).show();
-            progressDialog.dismiss();
-        }
     }
 
-    public void CargarAdmin(String  email){
+    public void CargarAdmin(String email) {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot datasnapshot) {
                 Registro.clear();
-                for (DataSnapshot snapshot : datasnapshot.getChildren()){
+                for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     User u = datasnapshot.getValue(User.class);
-                    if (u.getName()!= null){ Registro.add(u); }
+                    if (u.getName() != null) {
+                        Registro.add(u);
+                    }
                 }
                 GenerarAdmin(Registro, email);
             }
+
             @Override
-            public void onCancelled(DatabaseError error) {Log.e("onDataChange", "Error en OndataChange User", error.toException());}
+            public void onCancelled(DatabaseError error) {
+                Log.e("onDataChange", "Error en OndataChange User", error.toException());
+            }
         });
     }
-    public void GenerarAdmin(ArrayList<User> arrayList, String email){
-        firebaseUser =  firebaseAuth.getCurrentUser();
-        for(int i = 0 ;i <arrayList.size();i++){
-            if (i == 1){existe = true;}
+/*        if (arrayList.get(0).getEmail().equals(email)) {
+                existe = true;
+                System.out.println(arrayList.get(0).getEmail());
+                ad = arrayList.get(0).getEmail();
+            }*/
+    public void GenerarAdmin(ArrayList<User> arrayList, String email) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        String ad = "";
+        for (int i = 0; i < arrayList.size(); i++) {
+            if(i==0){
+                System.out.println(arrayList.get(0).getEmail());
+            }
         }
-        if(existe == false){
-            for (int i = 0; i<email.length(); i++){ if(email.charAt(i) == '@'){break;}else{alias = alias + email.charAt(i);}}
-            User u = new User(firebaseUser.getUid(),email,alias);
+        if (existe == false && ad.isEmpty()) {
+            for (int i = 0; i < email.length(); i++) {
+                if (email.charAt(i) == '@') {
+                    break;
+                } else {
+                    alias = alias + email.charAt(i);
+                }
+            }
+            User u = new User(firebaseUser.getUid(), email, alias);
             database.getReference("Admin").child(firebaseUser.getUid()).setValue(u);
         }
     }
+
+
+
+
     private void loguearAdmin() {
         email = TextEmail.getText().toString().trim();
         String password = TextPassword.getText().toString().trim();
-        if(email.isEmpty()|| password.isEmpty()){
-            if (email.equals("")) {Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show(); return;}
-            if (password.equals("")) {Toast.makeText(this,  R.string.forgivePassword, Toast.LENGTH_LONG).show();return;}
-        }else{
-            progressDialog.setMessage("Realizando login...");
-            progressDialog.show();
-            if(existe == true){
-                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {Toast.makeText(LoginRegistro.this, "Se ha logueado el admin con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
-                            persistencia();
-                            session();
-                        } else {Toast.makeText(LoginRegistro.this, R.string.log_error, Toast.LENGTH_LONG).show(); }
-                        progressDialog.dismiss();}});
+        if (email.isEmpty() || password.isEmpty()) {
+            if (email.equals("")) {
+                Toast.makeText(this, R.string.forgiveEmail, Toast.LENGTH_LONG).show();
+                return;
             }
+            if (password.equals("")) {
+                Toast.makeText(this, R.string.forgivePassword, Toast.LENGTH_LONG).show();
+                return;
+            }
+        } else {
+            progressDialog.setMessage("Realizando loguin...");
+            progressDialog.show();
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                            Toast.makeText(LoginRegistro.this, "Se ha logueado el admin con el email: " + TextEmail.getText(), Toast.LENGTH_LONG).show();
+                            GoAdmin(alias);
+                    } else {
+                        Toast.makeText(LoginRegistro.this, R.string.log_error, Toast.LENGTH_LONG).show();
+                    }
+                    progressDialog.dismiss();
+                }
+            });
         }
     }
 }

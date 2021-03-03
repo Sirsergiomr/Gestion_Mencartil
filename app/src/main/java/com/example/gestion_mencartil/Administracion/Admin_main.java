@@ -9,24 +9,94 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gestion_mencartil.Administracion.Fragments.AdapterLoc;
 import com.example.gestion_mencartil.R;
+import com.example.gestion_mencartil.Usuario.Models.Shops;
 import com.example.gestion_mencartil.ui.main.LoginRegistro;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+
+import static androidx.recyclerview.widget.RecyclerView.*;
 
 public class Admin_main extends AppCompatActivity {
+    private ArrayList<Shops> listaTiendas = new ArrayList<>();
+    DatabaseReference myRef = null;
+    FirebaseDatabase database = null;
+    FirebaseUser firebaseUser = null;
+
+    RecyclerView recyclerView;
+    private Object LayoutManager;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.admin_activity);
+        recyclerView = findViewById(R.id.recyclerLoc);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(new AdapterLoc(this));
+        LayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager((RecyclerView.LayoutManager) LayoutManager);
+        //datos();
         Bundle bundle = getIntent().getExtras();
         String alias = bundle.getString("alias");
         if (alias != null) {
             setTitle(alias);
         }
     }
+
+
+    public void  datos(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Shop");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded( DataSnapshot datasnapshot,  String previousChildName) {
+                Shops p = datasnapshot.getValue(Shops.class);
+                if(p!=null){
+                    System.out.println(" | " + p.getUid() + " | " + p.getNameShop());
+
+                    listaTiendas.add(p);
+                    recyclerView.setAdapter(new AdapterLoc(listaTiendas));
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);

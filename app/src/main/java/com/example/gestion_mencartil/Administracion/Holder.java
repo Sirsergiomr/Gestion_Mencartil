@@ -18,8 +18,6 @@ public class Holder extends RecyclerView.ViewHolder{
     public Holder(@NonNull View itemView) {
         super(itemView);
         this.name = itemView.findViewById(R.id.textViewnameLoc);
-
-
     }
 
 
@@ -29,10 +27,6 @@ public class Holder extends RecyclerView.ViewHolder{
 
     public TextView getName() {
         return name;
-    }
-
-    public void setName(TextView name) {
-        this.name = name;
     }
 
     public void setRow(ConstraintLayout row) {
